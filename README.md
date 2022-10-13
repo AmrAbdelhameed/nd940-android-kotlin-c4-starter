@@ -42,9 +42,15 @@ Explain what each test does and why
 
 ```
 1.androidTest
-        //TODO: Students explain their testing here.
+	a. RemindersDaoTest: Unit test the DAO.
+	b. RemindersLocalRepositoryTest: Medium Test to test the repository.
+	c. ReminderListFragmentTest: UI Testing.
+	d. DataBindingIdlingResource: An espresso idling resource implementation that reports idle status for all data binding layouts.
+	e. RemindersActivityTest: END TO END test to black box test the app.
 2. test
-        //TODO: Students explain their testing here.
+        a. FakeDataSource: Use FakeDataSource that acts as a test double to the LocalDataSource.
+	b. RemindersListViewModelTest: provide testing to the RemindersListViewModel and its live data objects.
+	c. SaveReminderViewModelTest: provide testing to the SaveReminderView and its live data objects.
 ```
 
 ## Project Instructions
