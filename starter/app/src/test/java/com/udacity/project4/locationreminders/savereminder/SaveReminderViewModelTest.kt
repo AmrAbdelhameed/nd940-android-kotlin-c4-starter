@@ -53,6 +53,7 @@ class SaveReminderViewModelTest {
 
     @After
     fun tearDown() {
+        // stop koin
         stopKoin()
     }
 

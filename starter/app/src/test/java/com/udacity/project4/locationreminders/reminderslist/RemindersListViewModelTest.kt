@@ -50,6 +50,7 @@ class RemindersListViewModelTest {
 
     @After
     fun tearDown() {
+        // stop koin
         stopKoin()
     }
 

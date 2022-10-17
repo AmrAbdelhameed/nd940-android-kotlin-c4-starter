@@ -10,18 +10,24 @@ import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
 @ExperimentalCoroutinesApi
+// to start/finish dispatchers for coroutineRule
 class MainCoroutineRule(
     private val dispatcher: TestCoroutineDispatcher = TestCoroutineDispatcher()
 ) : TestWatcher(), TestCoroutineScope by TestCoroutineScope(dispatcher) {
 
+    // to start and set dispatcher to Main Dispatchers
     override fun starting(description: Description?) {
         super.starting(description)
+        // setMain dispatcher to dispatchers
         Dispatchers.setMain(dispatcher)
     }
 
+    // reset to main dispatchers
     override fun finished(description: Description?) {
         super.finished(description)
+        // to cleanup
         cleanupTestCoroutines()
+        // reset to main dispatchers
         Dispatchers.resetMain()
     }
 }
