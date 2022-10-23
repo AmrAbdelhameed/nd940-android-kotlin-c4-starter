@@ -54,11 +54,14 @@ class RemindersListViewModelTest {
         stopKoin()
     }
 
+    // is Result.Success -> loadReminders.value not empty so showSnackBar (isNullOrEmpty)
+    // if loadReminders should return data (Result.Success), showSnackBar won't have a value
     @Test
-    fun getReminders_success() {
+    fun getReminders_shouldReturnTrueIfShouldFailIsFalseAndSnackBarIsNullOrEmpty() {
         // Pause dispatcher so you can verify initial values.
         mainCoroutineRule.pauseDispatcher()
 
+        // There is no failure
         repository.setShouldFail(false)
         viewModel.loadReminders()
 
@@ -75,11 +78,14 @@ class RemindersListViewModelTest {
         MatcherAssert.assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), Matchers.`is`(true))
     }
 
+    // is Result.Error -> showSnackBar.value = result.message
+    // if loadReminders will fail (Result.Error), showSnackBar will have a value
     @Test
-    fun getReminders_failure() {
+    fun getReminders_shouldReturnFalseIfShouldFailIsTrueAndSnackBarIsNotEmpty() {
         // Pause dispatcher so you can verify initial values.
         mainCoroutineRule.pauseDispatcher()
 
+        // There is failure
         repository.setShouldFail(true)
         viewModel.loadReminders()
 

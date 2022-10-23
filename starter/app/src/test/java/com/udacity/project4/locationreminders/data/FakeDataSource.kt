@@ -19,7 +19,6 @@ class FakeDataSource : ReminderDataSource {
     // returns Result success/error from reminders if shouldFail is false return success else error
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
         return try {
-            if (shouldFail) throw Exception("Error getting reminders")
             // returns success reminderList
             Result.Success(reminderList)
         } catch (e: Exception) {
