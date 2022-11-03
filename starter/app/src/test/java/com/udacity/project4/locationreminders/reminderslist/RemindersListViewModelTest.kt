@@ -4,13 +4,14 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.udacity.project4.locationreminders.utils.Utils.buildReminderData
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.rule.MainCoroutineRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.pauseDispatcher
 import kotlinx.coroutines.test.resumeDispatcher
-import org.hamcrest.MatcherAssert
-import org.hamcrest.Matchers
+import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.Matchers.`is`
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -44,7 +45,7 @@ class RemindersListViewModelTest {
     @Before
     fun setupViewModel() {
         // We initialise the tasks to 3, with one active and two completed
-        repository = FakeDataSource()
+        repository = FakeDataSource(buildReminderData())
         viewModel = RemindersListViewModel(ApplicationProvider.getApplicationContext(), repository)
     }
 
@@ -61,21 +62,19 @@ class RemindersListViewModelTest {
         // Pause dispatcher so you can verify initial values.
         mainCoroutineRule.pauseDispatcher()
 
-        // There is no failure
-        repository.setShouldFail(false)
         viewModel.loadReminders()
 
         // Then assert that the progress indicator is shown.
-        MatcherAssert.assertThat(viewModel.showLoading.value, Matchers.`is`(true))
+        assertThat(viewModel.showLoading.value, `is`(true))
 
         // Execute pending coroutines actions.
         mainCoroutineRule.resumeDispatcher()
 
         // Then assert that the progress indicator is hidden.
-        MatcherAssert.assertThat(viewModel.showLoading.value, Matchers.`is`(false))
+        assertThat(viewModel.showLoading.value, `is`(false))
 
         // Then assert that an error message is not shown.
-        MatcherAssert.assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), Matchers.`is`(true))
+        assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), `is`(true))
     }
 
     // is Result.Error -> showSnackBar.value = result.message
@@ -90,15 +89,15 @@ class RemindersListViewModelTest {
         viewModel.loadReminders()
 
         // Then assert that the progress indicator is shown.
-        MatcherAssert.assertThat(viewModel.showLoading.value, Matchers.`is`(true))
+        assertThat(viewModel.showLoading.value, `is`(true))
 
         // Execute pending coroutines actions.
         mainCoroutineRule.resumeDispatcher()
 
         // Then assert that the progress indicator is hidden.
-        MatcherAssert.assertThat(viewModel.showLoading.value, Matchers.`is`(false))
+        assertThat(viewModel.showLoading.value, `is`(false))
 
         // Then assert that the error message is shown.
-        MatcherAssert.assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), Matchers.`is`(false))
+        assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), `is`(false))
     }
 }

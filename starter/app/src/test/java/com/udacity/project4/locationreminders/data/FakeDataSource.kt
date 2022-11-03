@@ -4,12 +4,10 @@ import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
 
 // Use FakeDataSource that acts as a test double to the LocalDataSource
-class FakeDataSource : ReminderDataSource {
+class FakeDataSource(private val reminderList: MutableList<ReminderDTO> = mutableListOf()) :
+    ReminderDataSource {
 
     private var shouldFail = false
-
-    // Create a fake data source to act as a double to the real data source
-    var reminderList = mutableListOf<ReminderDTO>()
 
     // sets shouldFail true/false for our repository
     fun setShouldFail(shouldFail: Boolean) {
@@ -18,32 +16,33 @@ class FakeDataSource : ReminderDataSource {
 
     // returns Result success/error from reminders if shouldFail is false return success else error
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
-        return try {
-            // returns success reminderList
-            Result.Success(reminderList)
-        } catch (e: Exception) {
-            // get back error
-            Result.Error(e.message)
+        if (shouldFail) {
+            return Result.Error("Test Exception")
         }
+        return Result.Success(reminderList.toList())
     }
 
     // to save reminder to our reminderList if shouldFail is false value
     override suspend fun saveReminder(reminder: ReminderDTO) {
-        if (shouldFail) throw Exception("Error saving reminder")
         // add to reminderList
         reminderList.add(reminder)
     }
 
     // to get reminder by id from our reminderList if shouldFail is false value
     override suspend fun getReminder(id: String): Result<ReminderDTO> {
-        if (shouldFail) throw Exception("Error getting reminder")
-        // get first reminder by id
-        return Result.Success(reminderList.first { it.id == id })
+        if (shouldFail) {
+            return Result.Error("Test Exception")
+        }
+        reminderList.find { it.id == id }?.let {
+            return Result.Success(it)
+        }
+        return Result.Error(
+            "Reminder not found"
+        )
     }
 
     // delete our reminderList if shouldFail is false value
     override suspend fun deleteAllReminders() {
-        if (shouldFail) throw Exception("Error deleting reminders")
         // clear all
         reminderList.clear()
     }

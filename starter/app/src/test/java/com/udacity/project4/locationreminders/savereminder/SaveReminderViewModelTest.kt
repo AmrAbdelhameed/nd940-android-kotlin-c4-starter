@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.udacity.project4.locationreminders.utils.Utils.buildReminderData
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.locationreminders.rule.MainCoroutineRule
@@ -19,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
-//import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
@@ -47,7 +47,7 @@ class SaveReminderViewModelTest {
     @Before
     fun setupViewModel() {
         // We initialise the tasks to 3, with one active and two completed
-        repository = FakeDataSource()
+        repository = FakeDataSource(buildReminderData())
         viewModel = SaveReminderViewModel(ApplicationProvider.getApplicationContext(), repository)
     }
 
