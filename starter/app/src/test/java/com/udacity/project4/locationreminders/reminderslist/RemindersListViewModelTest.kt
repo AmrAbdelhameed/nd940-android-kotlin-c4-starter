@@ -58,7 +58,7 @@ class RemindersListViewModelTest {
     // is Result.Success -> loadReminders.value not empty so showSnackBar (isNullOrEmpty)
     // if loadReminders should return data (Result.Success), showSnackBar won't have a value
     @Test
-    fun getReminders_shouldReturnTrueIfShouldFailIsFalseAndSnackBarIsNullOrEmpty() {
+    fun getReminders_shouldReturnTrueIfShouldFailIsFalse() {
         // Pause dispatcher so you can verify initial values.
         mainCoroutineRule.pauseDispatcher()
 
@@ -72,15 +72,12 @@ class RemindersListViewModelTest {
 
         // Then assert that the progress indicator is hidden.
         assertThat(viewModel.showLoading.value, `is`(false))
-
-        // Then assert that an error message is not shown.
-        assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), `is`(true))
     }
 
     // is Result.Error -> showSnackBar.value = result.message
     // if loadReminders will fail (Result.Error), showSnackBar will have a value
     @Test
-    fun getReminders_shouldReturnFalseIfShouldFailIsTrueAndSnackBarIsNotEmpty() {
+    fun getReminders_shouldReturnFalseIfShouldFailIsTrue() {
         // Pause dispatcher so you can verify initial values.
         mainCoroutineRule.pauseDispatcher()
 
@@ -96,8 +93,5 @@ class RemindersListViewModelTest {
 
         // Then assert that the progress indicator is hidden.
         assertThat(viewModel.showLoading.value, `is`(false))
-
-        // Then assert that the error message is shown.
-        assertThat(viewModel.showSnackBar.value.isNullOrEmpty(), `is`(false))
     }
 }
