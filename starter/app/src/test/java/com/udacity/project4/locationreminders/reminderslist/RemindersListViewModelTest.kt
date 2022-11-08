@@ -4,12 +4,13 @@ import android.os.Build
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.udacity.project4.locationreminders.utils.Utils.buildReminderData
 import com.udacity.project4.locationreminders.data.FakeDataSource
 import com.udacity.project4.locationreminders.rule.MainCoroutineRule
+import com.udacity.project4.locationreminders.utils.Utils.buildReminderData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.pauseDispatcher
 import kotlinx.coroutines.test.resumeDispatcher
+import org.hamcrest.CoreMatchers
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.`is`
 import org.junit.After
@@ -93,5 +94,11 @@ class RemindersListViewModelTest {
 
         // Then assert that the progress indicator is hidden.
         assertThat(viewModel.showLoading.value, `is`(false))
+
+        // Test the error message content is actually the expected value
+        assertThat(
+            viewModel.showSnackBar.value,
+            CoreMatchers.`is`("Test Exception")
+        )
     }
 }
